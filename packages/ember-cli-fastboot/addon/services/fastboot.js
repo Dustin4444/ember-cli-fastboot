@@ -21,6 +21,7 @@ const RequestObject = EObject.extend({
     this.queryParams = request?.queryParams;
     this.path = request?.path;
     this.protocol = request?.protocol;
+    this.userdata = request?.userdata;
     this._host = function() {
       return request?.host();
     };
