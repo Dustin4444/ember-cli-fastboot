@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var FastBootInfo = require('./../src/fastboot-info.js');
 var FastBootResponse = require('./../src/fastboot-response.js');
 var FastBootRequest = require('./../src/fastboot-request.js');
+var FastBootUserdata = require('./../src/fastboot-userdata.js');
 
 function delayFor(ms) {
   let promise = new Promise(resolve => {
@@ -46,6 +47,28 @@ describe('FastBootInfo', function() {
 
   it('has metadata', function() {
     expect(fastbootInfo.metadata).to.deep.equal(metadata);
+  });
+
+  it('exposes userdata on the request as a FastBootUserdata instance', function() {
+    var userdata = { secretName: 'mySecret' };
+    var info = new FastBootInfo(request, response, { metadata, userdata });
+
+    expect(info.request.userdata).to.be.an.instanceOf(FastBootUserdata);
+    expect(info.request.userdata.get('secretName')).to.equal('mySecret');
+  });
+
+  it('request.userdata returns undefined for missing keys when userdata is provided', function() {
+    var userdata = { secretName: 'mySecret' };
+    var info = new FastBootInfo(request, response, { metadata, userdata });
+
+    expect(info.request.userdata.get('missingKey')).to.be.undefined;
+  });
+
+  it('request.userdata works when no userdata option is provided', function() {
+    var info = new FastBootInfo(request, response, { metadata });
+
+    expect(info.request.userdata).to.be.an.instanceOf(FastBootUserdata);
+    expect(info.request.userdata.get('anyKey')).to.be.undefined;
   });
 
   it('can use deferRendering', async function() {
