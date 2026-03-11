@@ -2,9 +2,10 @@
 
 const cookie = require('cookie');
 const FastBootHeaders = require('./fastboot-headers');
+const FastBootUserdata = require('./fastboot-userdata');
 
 class FastBootRequest {
-  constructor(request, hostWhitelist) {
+  constructor(request, hostWhitelist, userdata) {
     this.hostWhitelist = hostWhitelist;
 
     this.protocol = `${request.protocol}:`;
@@ -15,6 +16,7 @@ class FastBootRequest {
     this.body = request.body;
 
     this.cookies = this.extractCookies(request);
+    this.userdata = new FastBootUserdata(userdata);
   }
 
   host() {

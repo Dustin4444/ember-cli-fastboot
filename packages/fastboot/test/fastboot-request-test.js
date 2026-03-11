@@ -165,4 +165,75 @@ describe('FastBootRequest', function() {
 
     expect(fastbootRequest.body).to.equal('TEST');
   });
+
+  it('captures userdata passed to the constructor', function() {
+    var request = {
+      protocol: 'http',
+      url: '/foo',
+      headers: {
+        cookie: '',
+      },
+    };
+    var userdata = { secretName: 'mySecretValue' };
+    var fastbootRequest = new FastBootRequest(request, null, userdata);
+
+    expect(fastbootRequest.userdata.get('secretName')).to.equal('mySecretValue');
+  });
+
+  it('returns undefined for missing userdata keys', function() {
+    var request = {
+      protocol: 'http',
+      url: '/foo',
+      headers: {
+        cookie: '',
+      },
+    };
+    var userdata = { secretName: 'mySecretValue' };
+    var fastbootRequest = new FastBootRequest(request, null, userdata);
+
+    expect(fastbootRequest.userdata.get('nonExistentKey')).to.be.undefined;
+  });
+
+  it('returns an empty userdata object when none is provided', function() {
+    var request = {
+      protocol: 'http',
+      url: '/foo',
+      headers: {
+        cookie: '',
+      },
+    };
+    var fastbootRequest = new FastBootRequest(request);
+
+    expect(fastbootRequest.userdata.get('anyKey')).to.be.undefined;
+  });
+
+  it('userdata.has() returns true for existing keys', function() {
+    var request = {
+      protocol: 'http',
+      url: '/foo',
+      headers: {
+        cookie: '',
+      },
+    };
+    var userdata = { secretName: 'mySecretValue' };
+    var fastbootRequest = new FastBootRequest(request, null, userdata);
+
+    expect(fastbootRequest.userdata.has('secretName')).to.be.true;
+    expect(fastbootRequest.userdata.has('nonExistentKey')).to.be.false;
+  });
+
+  it('userdata.get() does not return inherited prototype properties', function() {
+    var request = {
+      protocol: 'http',
+      url: '/foo',
+      headers: {
+        cookie: '',
+      },
+    };
+    var fastbootRequest = new FastBootRequest(request, null, {});
+
+    // 'toString' exists on Object.prototype but should not be accessible via userdata.get()
+    expect(fastbootRequest.userdata.get('toString')).to.be.undefined;
+    expect(fastbootRequest.userdata.has('toString')).to.be.false;
+  });
 });

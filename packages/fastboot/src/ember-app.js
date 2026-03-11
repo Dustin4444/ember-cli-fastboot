@@ -285,6 +285,7 @@ class EmberApp {
    * @param {Object} options
    * @param {string} [options.html] the HTML document to insert the rendered app into
    * @param {Object} [options.metadata] Per request specific data used in the app.
+   * @param {Object} [options.userdata] Arbitrary per-request data provided by the server, accessible in the app via `fastboot.request.userdata.get(key)`.
    * @param {Boolean} [options.shouldRender] whether the app should do rendering or not. If set to false, it puts the app in routing-only.
    * @param {Boolean} [options.disableShoebox] whether we should send the API data in the shoebox. If set to false, it will not send the API data used for rendering the app on server side in the index.html.
    * @param {Integer} [options.destroyAppInstanceInMs] whether to destroy the instance in the given number of ms. This is a failure mechanism to not wedge the Node process (See: https://github.com/ember-fastboot/fastboot/issues/90)
@@ -306,6 +307,7 @@ class EmberApp {
     let fastbootInfo = new FastBootInfo(req, res, {
       hostWhitelist: this.hostWhitelist,
       metadata: options.metadata || {},
+      userdata: options.userdata || {},
     });
 
     let doc = bootOptions.document;
