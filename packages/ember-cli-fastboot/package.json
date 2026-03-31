@@ -85,7 +85,7 @@
     "lint-to-the-future": "^2.0.0",
     "lint-to-the-future-eslint": "^2.0.1",
     "loader.js": "^4.7.0",
-    "mocha": "^9.1.2",
+    "mocha": "^10.6.0",
     "prettier": "^3.2.5",
     "qunit": "^2.20.1",
     "qunit-dom": "^2.0.0",
