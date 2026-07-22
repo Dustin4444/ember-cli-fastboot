@@ -9,7 +9,7 @@
     "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.20.6",
     "chai": "^4.3.7",
     "ember-cli-head": "^2.0.0",
     "ember-service-import-polyfill": "^1.0.0",
